@@ -32,11 +32,11 @@ jobs:
       # release pm-win-shutdown.exe
       - run: cargo build --release
 
-      # out 发布包
+      # out 发布包 (.ps1)
       - run: |
-          mkdir -p out/ && \
-          cp target/release/pm-win-shutdown.exe out/ && \
-          cp -r script out/ && \
+          mkdir -p out/
+          cp target/release/pm-win-shutdown.exe out/
+          cp -r script out/
           cp LICENSE README.md out/
 
       - uses: actions/upload-artifact@v7
