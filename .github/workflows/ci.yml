@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - run: deno fmt --check
+      - run: cargo fmt --check
+
+      # rust: pm-win-shutdown
+      - run: cargo build
+      - run: cargo test
+      - run: cargo doc
+
+      # release pm-win-shutdown.exe
+      - run: cargo build --release
+
+      # out 发布包
+      - run: |
+          mkdir -p out/ && \
+          cp target/release/pm-win-shutdown.exe out/ && \
+          cp -r script out/ && \
+          cp LICENSE README.md out/
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pm-win-shutdown
+          path: out/*
