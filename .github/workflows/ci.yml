@@ -6,8 +6,9 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: windows-latest
+  # 只检查 代码格式
+  fmt:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: denoland/setup-deno@v2
@@ -16,6 +17,12 @@ jobs:
 
       - run: deno fmt --check
       - run: cargo fmt --check
+
+  # 编译
+  build-win:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
 
       # rust: pm-win-shutdown
       - run: cargo build
